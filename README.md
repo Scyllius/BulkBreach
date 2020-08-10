@@ -7,7 +7,7 @@ This script has only been tested on Kali Linux 2020.2.
 
 ## Requirements
 * h8mail - Has to be installed from sources. PIP3 will not work!
-* Bash shell (/bin/bash)- It will not work with a `/bin/sh` shell
+* Bash shell (/bin/bash) - It will not work with a `/bin/sh` shell
 
 ## Installation
 Clone the repository using `git clone https://github.com/Scyllius/BulkBreach.git`
@@ -18,15 +18,13 @@ Run the script `./BulkBreach.sh`
 
 ## Usage
 
-```console
-$ ./BulkBreach.sh <email_list> [output_path]
-```
+`$ ./BulkBreach.sh -e <email_list> -o [output_path]`
 
 If the `output_path` is not specified, it will use the same folder in which the script is located.
 
 
 ## Usage examples
 
-`$ ./BulkBreach.sh ~/EmailList.txt`
+`$ ./BulkBreach.sh -e /path/to/EmailList.txt`
 
-`$ ./BulkBreach.sh ~/EmailList.txt ~/OutputFolder`
+`$ ./BulkBreach.sh -e /path/to/EmailList.txt -o /path/to/output/directory`

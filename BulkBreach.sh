@@ -1,26 +1,76 @@
 #!/bin/bash
 
-if [[ "$#" -lt 1 && "$#" -gt 2 ]]; then
-    echo "Usage: ./bulkBreach.sh <email_list> [output_path]"
-    echo "Example: ./bulkBreach.sh /home/user/emails.txt /home/user"
-    exit 2
-fi
-
-emailList=$(realpath "$1")
-outputPath=0
-
-if [[ "$#" -ne 2 ]]; then
-    outputPath="$(dirname "${BASH_SOURCE[0]}")"
-    outputPath="$(realpath "${outputPath}")"
-else outputPath=$2
-fi
-
 RED='\033[0;31m'
 GREEN='\033[1m'
 BLUE='\033[1;36m'
 NC='\033[0m'
 
-echo -e "${BLUE}Starting search!${NC}\n"
+HELP='USAGE:
+Required parameters:
+    -e  FILE    Email list file location
+    
+Optional parameters:
+    -o  DIR     Output directory to save the password list
+  
+Additional parameters:
+    -h          Print this help menu
+    
+Examples:
+    Process all emails and export in the same directory as this script
+        ./BulkBreach.sh -e /path/to/email_list.txt
+    Process all emails and export in a user specified directory
+        ./BulkBreach.sh -e /path/to/email_list.txt -o /path/to/output/directory
+'
+
+if [[ $# -lt 2 || $# -gt 4 ]]; then
+    echo "$HELP"
+    exit 2
+fi
+
+emailList=""
+outputPath=""
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case $key in
+        -e|--email)
+            emailList=$2
+            shift # past argument
+            shift # past value
+        ;;
+        -o|--output)
+            outputPath=$2
+            shift # past argument
+            shift # past value
+        ;;
+        *)    # unknown option
+            echo "$HELP"
+            exit 2
+        ;;
+    esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if [[ $outputPath == "" ]]; then
+    outputPath="$(dirname "${BASH_SOURCE[0]}")"
+    outputPath="$(realpath "${outputPath}")"
+fi
+
+if [[ -f "$outputPath/BulkBreach_Passwords.txt" ]]; then
+    while true; do
+        read -p "Existing password file found. Do you wish to override it? (y/n) " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) echo "Exiting..."; exit 0;;
+            * ) echo "Please answer y (Yes) or n (No).";;
+        esac
+    done
+fi
+
+echo -e "${BLUE}----- Starting search! -----${NC}\n"
 
 breachedEmailCounter=0
 normalCounter=0
@@ -48,10 +98,12 @@ for email in $(cat $emailList); do
     fi
 done
 
+sed -i -E '/Collection|dropbox\.com/d' "$outputPath/BulkBreach_Passwords.txt"
+
 sort -u "$outputPath/BulkBreach_Passwords.txt" -o "$outputPath/BulkBreach_Passwords.txt"
 
 passwordCounter=$(wc -l < $outputPath/BulkBreach_Passwords.txt)
 
 echo -e "\n${BLUE}Found $breachedEmailCounter breached emails with $passwordCounter passwords in total!${NC}"
 
-echo -e "${BLUE}Finished!${NC}" 
+echo -e "${BLUE}----- Finished! -----${NC}" 
