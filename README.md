@@ -1,4 +1,4 @@
-# BulkBreach [![version](https://img.shields.io/badge/version-1.0-red.svg)](https://semver.org)
+# BulkBreach [![version](https://img.shields.io/badge/version-1.1-red.svg)](https://semver.org)
 
 BulkBreach is a tool created to automate the process of searching for breached passwords. The only difference between this script and using the built-in bulk reading is the output. This script will give you a compact list of breached passwords and the corresponding email. It incorporates a tool called h8mail which you can find [here](https://github.com/khast3x/h8mail).
 
