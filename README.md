@@ -10,7 +10,7 @@ This script has only been tested on Kali Linux 2020.2.
 * Bash shell (/bin/bash) - It will not work with a `/bin/sh` shell
 
 ## Installation
-Clone the repository using `git clone https://github.com/Scyllius/BulkBreach.git`
+Clone the repository using `git clone https://github.com/kostoskistefan/BulkBreach.git`
 
 Change to the cloned directory `cd BulkBreach`
 
